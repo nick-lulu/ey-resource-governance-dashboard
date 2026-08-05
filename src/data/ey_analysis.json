@@ -1,0 +1,434 @@
+{
+  "as_of": "2026-07-31",
+  "source": {
+    "plan": "Planning workbook",
+    "actual": "Actual timesheet workbook"
+  },
+  "featured_names": [
+    "Iris jin",
+    "Morgan Xu",
+    "Nina Wu",
+    "Cindy Zhang"
+  ],
+  "resource_count": 13,
+  "totals": {
+    "q1_planned": 87.31,
+    "q1_actual": 107.44,
+    "q2_planned": 65.96,
+    "q2_actual": 31.91,
+    "q3_planned": 6.12,
+    "q3_actual": 0.0
+  },
+  "featured_totals": {
+    "q1_actual": 84.19,
+    "q1_planned": 59.44,
+    "q2_actual": 3.19,
+    "q2_planned": 24.5,
+    "q3_planned": 1.52
+  },
+  "resources": [
+    {
+      "name": "Camellia Wang",
+      "featured": false,
+      "q1_planned": 1.43,
+      "q1_actual": 1.31,
+      "q2_planned": 2.17,
+      "q2_actual": 1.8,
+      "q3_planned": 0.18,
+      "q3_actual": 0.0,
+      "status": "Low",
+      "current_read": "Forecast baseline exists"
+    },
+    {
+      "name": "Chelsea Zhang",
+      "featured": false,
+      "q1_planned": 1.52,
+      "q1_actual": 1.5,
+      "q2_planned": 2.56,
+      "q2_actual": 1.78,
+      "q3_planned": 0.18,
+      "q3_actual": 0.0,
+      "status": "Low",
+      "current_read": "Forecast baseline exists"
+    },
+    {
+      "name": "Cindy Liu",
+      "featured": false,
+      "q1_planned": 1.78,
+      "q1_actual": 1.75,
+      "q2_planned": 3.06,
+      "q2_actual": 2.49,
+      "q3_planned": 0.18,
+      "q3_actual": 0.0,
+      "status": "High",
+      "current_read": "Q3 forecast needs confirmation"
+    },
+    {
+      "name": "Cindy Zhang",
+      "featured": true,
+      "q1_planned": 7.14,
+      "q1_actual": 21.47,
+      "q2_planned": 3.14,
+      "q2_actual": 0.0,
+      "q3_planned": 0.03,
+      "q3_actual": 0.0,
+      "status": "High",
+      "current_read": "Q3 forecast is very light vs historical demand"
+    },
+    {
+      "name": "Ellie Wang",
+      "featured": false,
+      "q1_planned": 0.0,
+      "q1_actual": 0.0,
+      "q2_planned": 0.61,
+      "q2_actual": 0.0,
+      "q3_planned": 0.0,
+      "q3_actual": 0.0,
+      "status": "Medium",
+      "current_read": "No Q3 demand currently planned"
+    },
+    {
+      "name": "Iris jin",
+      "featured": true,
+      "q1_planned": 32.98,
+      "q1_actual": 21.59,
+      "q2_planned": 1.19,
+      "q2_actual": 0.0,
+      "q3_planned": 0.03,
+      "q3_actual": 0.0,
+      "status": "High",
+      "current_read": "Q3 forecast is very light vs historical demand"
+    },
+    {
+      "name": "Jason Yu",
+      "featured": false,
+      "q1_planned": 0.35,
+      "q1_actual": 0.25,
+      "q2_planned": 0.02,
+      "q2_actual": 0.0,
+      "q3_planned": 0.0,
+      "q3_actual": 0.0,
+      "status": "Medium",
+      "current_read": "No Q3 demand currently planned"
+    },
+    {
+      "name": "Morgan Xu",
+      "featured": true,
+      "q1_planned": 18.74,
+      "q1_actual": 2.88,
+      "q2_planned": 19.65,
+      "q2_actual": 3.19,
+      "q3_planned": 1.46,
+      "q3_actual": 0.0,
+      "status": "High",
+      "current_read": "Q3 forecast needs confirmation"
+    },
+    {
+      "name": "Nina Wu",
+      "featured": true,
+      "q1_planned": 0.58,
+      "q1_actual": 38.25,
+      "q2_planned": 0.52,
+      "q2_actual": 0.0,
+      "q3_planned": 0.0,
+      "q3_actual": 0.0,
+      "status": "High",
+      "current_read": "Q3 forecast missing despite historical demand"
+    },
+    {
+      "name": "Raymond Lei",
+      "featured": false,
+      "q1_planned": 0.18,
+      "q1_actual": 0.06,
+      "q2_planned": 2.61,
+      "q2_actual": 0.0,
+      "q3_planned": 0.0,
+      "q3_actual": 0.0,
+      "status": "Medium",
+      "current_read": "No Q3 demand currently planned"
+    },
+    {
+      "name": "Stella Chen",
+      "featured": false,
+      "q1_planned": 12.3,
+      "q1_actual": 10.0,
+      "q2_planned": 15.12,
+      "q2_actual": 13.74,
+      "q3_planned": 2.11,
+      "q3_actual": 0.0,
+      "status": "High",
+      "current_read": "Q3 forecast needs confirmation"
+    },
+    {
+      "name": "Winnie Liu",
+      "featured": false,
+      "q1_planned": 0.0,
+      "q1_actual": 0.0,
+      "q2_planned": 6.33,
+      "q2_actual": 0.0,
+      "q3_planned": 1.04,
+      "q3_actual": 0.0,
+      "status": "Medium",
+      "current_read": "Forecast baseline exists"
+    },
+    {
+      "name": "jiabao liu",
+      "featured": false,
+      "q1_planned": 10.31,
+      "q1_actual": 8.38,
+      "q2_planned": 8.97,
+      "q2_actual": 8.91,
+      "q3_planned": 0.91,
+      "q3_actual": 0.0,
+      "status": "High",
+      "current_read": "Q3 forecast needs confirmation"
+    }
+  ],
+  "projects": [
+    {
+      "quarter": "Q1",
+      "project": "Daily Operation - TA",
+      "actual": 22.94,
+      "planned": 27.33
+    },
+    {
+      "quarter": "Q1",
+      "project": "Petty Cash",
+      "actual": 34.62,
+      "planned": 13.48
+    },
+    {
+      "quarter": "Q1",
+      "project": "Helios AI",
+      "actual": 23.53,
+      "planned": 9.58
+    },
+    {
+      "quarter": "Q1",
+      "project": "Corporate Resource Pool",
+      "actual": 23.28,
+      "planned": 0.25
+    },
+    {
+      "quarter": "Q1",
+      "project": "Avature Enhancement Q1 - Offer Letter Template&Field Enhancement",
+      "actual": 2.62,
+      "planned": 12.55
+    },
+    {
+      "quarter": "Q1",
+      "project": "China People Data Compliance Project - External Candidate Sensitive Data Collection in Avature",
+      "actual": 0.12,
+      "planned": 14.0
+    },
+    {
+      "quarter": "Q1",
+      "project": "CR : E2P Enhancement",
+      "actual": 0.0,
+      "planned": 3.82
+    },
+    {
+      "quarter": "Q1",
+      "project": "CR : Chart Attribute Change",
+      "actual": 0.0,
+      "planned": 3.72
+    },
+    {
+      "quarter": "Q1",
+      "project": "Reduce the usage cost of ACK",
+      "actual": 0.19,
+      "planned": 0.38
+    },
+    {
+      "quarter": "Q1",
+      "project": "Educator training optimization - E Learning",
+      "actual": 0.0,
+      "planned": 0.53
+    },
+    {
+      "quarter": "Q1",
+      "project": "Enhancement CR Q1 - AP WMP backend data",
+      "actual": 0.0,
+      "planned": 0.38
+    },
+    {
+      "quarter": "Q1",
+      "project": "Monthly People Safety Walkthrough",
+      "actual": 0.0,
+      "planned": 0.38
+    },
+    {
+      "quarter": "Q1",
+      "project": "Store Visit Reports",
+      "actual": 0.0,
+      "planned": 0.38
+    },
+    {
+      "quarter": "Q1",
+      "project": "IP Protection Phase 1 - Source Code Delivery",
+      "actual": 0.12,
+      "planned": 0.2
+    },
+    {
+      "quarter": "Q1",
+      "project": "Daily Operation",
+      "actual": 0.0,
+      "planned": 0.25
+    },
+    {
+      "quarter": "Q1",
+      "project": "IP Protection Phase 2 - Pipeline Migration",
+      "actual": 0.0,
+      "planned": 0.07
+    },
+    {
+      "quarter": "Q2",
+      "project": "Daily Operation - TA",
+      "actual": 28.72,
+      "planned": 32.5
+    },
+    {
+      "quarter": "Q2",
+      "project": "China People Data Compliance Project - PI Data governance for external vendor",
+      "actual": 0.0,
+      "planned": 14.43
+    },
+    {
+      "quarter": "Q2",
+      "project": "Avature Enhancement Q1 - Offer Letter Template&Field Enhancement",
+      "actual": 3.19,
+      "planned": 5.22
+    },
+    {
+      "quarter": "Q2",
+      "project": "CR_Employee referral report",
+      "actual": 0.0,
+      "planned": 6.33
+    },
+    {
+      "quarter": "Q2",
+      "project": "IP Protection Phase 2 - Pipeline Migration",
+      "actual": 0.0,
+      "planned": 5.69
+    },
+    {
+      "quarter": "Q2",
+      "project": "Educator training optimization - E Learning",
+      "actual": 0.0,
+      "planned": 0.46
+    },
+    {
+      "quarter": "Q2",
+      "project": "Improve store facility maintenance process",
+      "actual": 0.0,
+      "planned": 0.41
+    },
+    {
+      "quarter": "Q2",
+      "project": "Enhancement CR Q1 - AP WMP backend data",
+      "actual": 0.0,
+      "planned": 0.25
+    },
+    {
+      "quarter": "Q2",
+      "project": "Monthly People Safety Walkthrough",
+      "actual": 0.0,
+      "planned": 0.25
+    },
+    {
+      "quarter": "Q2",
+      "project": "Store Visit Reports",
+      "actual": 0.0,
+      "planned": 0.25
+    },
+    {
+      "quarter": "Q2",
+      "project": "Petty Cash",
+      "actual": 0.0,
+      "planned": 0.06
+    },
+    {
+      "quarter": "Q2",
+      "project": "Corporate Resource Pool",
+      "actual": 0.0,
+      "planned": 0.05
+    },
+    {
+      "quarter": "Q2",
+      "project": "Reduce the usage cost of ACK",
+      "actual": 0.0,
+      "planned": 0.05
+    },
+    {
+      "quarter": "Q3",
+      "project": "Daily Operation - TA",
+      "actual": 0.0,
+      "planned": 3.57
+    },
+    {
+      "quarter": "Q3",
+      "project": "China People Data Compliance Project - PI Data governance for external vendor",
+      "actual": 0.0,
+      "planned": 1.46
+    },
+    {
+      "quarter": "Q3",
+      "project": "CR_Employee referral report",
+      "actual": 0.0,
+      "planned": 1.04
+    },
+    {
+      "quarter": "Q3",
+      "project": "Corporate Resource Pool",
+      "actual": 0.0,
+      "planned": 0.05
+    }
+  ],
+  "monthly": [
+    {
+      "month": "Feb",
+      "actual": 27.0,
+      "planned": 6.01
+    },
+    {
+      "month": "Mar",
+      "actual": 53.34,
+      "planned": 32.49
+    },
+    {
+      "month": "Apr",
+      "actual": 27.09,
+      "planned": 48.81
+    },
+    {
+      "month": "May",
+      "actual": 17.75,
+      "planned": 22.13
+    },
+    {
+      "month": "Jun",
+      "actual": 7.4,
+      "planned": 19.76
+    },
+    {
+      "month": "Jul",
+      "actual": 6.76,
+      "planned": 24.07
+    },
+    {
+      "month": "Aug",
+      "actual": 0.0,
+      "planned": 3.9
+    },
+    {
+      "month": "Sep",
+      "actual": 0.0,
+      "planned": 1.11
+    },
+    {
+      "month": "Oct",
+      "actual": 0.0,
+      "planned": 1.11
+    }
+  ]
+}
