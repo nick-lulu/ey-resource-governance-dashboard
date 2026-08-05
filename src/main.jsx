@@ -48,7 +48,13 @@ function StatusBadge({ value }) {
 }
 
 function downloadDetail() {
-  const columns = ["Resource", "Core EY", "Status", "Q1 Actual", "Q1 Planned", "Q2 Actual", "Q2 Planned", "Q3 Forecast", "Current Read"];
+  const columns = [
+    "Resource", "Core EY", "Status",
+    "Q1 Actual", "Q1 Planned", "Q2 Actual", "Q2 Planned", "Q3 Forecast",
+    "Q1 CSCOP Actual", "Q1 CSCOP Planned", "Q2 CSCOP Actual", "Q2 CSCOP Planned", "Q3 CSCOP Forecast",
+    "Q1 Non-CSCOP Actual", "Q1 Non-CSCOP Planned", "Q2 Non-CSCOP Actual", "Q2 Non-CSCOP Planned", "Q3 Non-CSCOP Forecast",
+    "Current Read",
+  ];
   const rows = data.resources.map((row) => [
     row.name,
     row.featured ? "Yes" : "No",
@@ -58,6 +64,16 @@ function downloadDetail() {
     row.q2_actual,
     row.q2_planned,
     row.q3_planned,
+    row.q1_cscop_actual,
+    row.q1_cscop_planned,
+    row.q2_cscop_actual,
+    row.q2_cscop_planned,
+    row.q3_cscop_planned,
+    row.q1_non_cscop_actual,
+    row.q1_non_cscop_planned,
+    row.q2_non_cscop_actual,
+    row.q2_non_cscop_planned,
+    row.q3_non_cscop_planned,
     row.current_read,
   ]);
   const csv = [columns, ...rows]
@@ -73,12 +89,22 @@ function downloadDetail() {
 
 function App() {
   const [projectQuarter, setProjectQuarter] = useState("Q1");
-  const { totals, featured_totals: featuredTotals } = data;
+  const [projectScope, setProjectScope] = useState("cscop");
+  const [resourceScope, setResourceScope] = useState("cscop");
+  const {
+    totals,
+    cscop_totals: cscopTotals,
+    non_cscop_totals: nonCscopTotals,
+    featured_totals: featuredTotals,
+  } = data;
   const q1Gap = totals.q1_actual - totals.q1_planned;
   const q2Gap = totals.q2_actual - totals.q2_planned;
   const q3VsQ2Actual = totals.q2_actual ? totals.q3_planned / totals.q2_actual : 0;
   const q3VsQ2Plan = totals.q2_planned ? totals.q3_planned / totals.q2_planned : 0;
   const featuredShare = totals.q1_actual ? featuredTotals.q1_actual / totals.q1_actual : 0;
+  const q1CscopCoverage = totals.q1_actual ? cscopTotals.q1_actual / totals.q1_actual : 0;
+  const q2CscopCoverage = totals.q2_actual ? cscopTotals.q2_actual / totals.q2_actual : 0;
+  const q3CscopCoverage = totals.q3_planned ? cscopTotals.q3_planned / totals.q3_planned : 0;
 
   const chartData = [
     { quarter: "Q1", actual: totals.q1_actual, planned: totals.q1_planned },
@@ -95,9 +121,14 @@ function App() {
     [],
   );
   const projectRows = useMemo(
-    () => data.projects.filter((row) => row.quarter === projectQuarter).slice(0, 10),
-    [projectQuarter],
+    () => data.projects
+      .filter((row) => row.quarter === projectQuarter && row.cscop === (projectScope === "cscop"))
+      .slice(0, 10),
+    [projectQuarter, projectScope],
   );
+
+  const scopedResourceValue = (row, quarter, type) =>
+    row[`${quarter}_${resourceScope === "cscop" ? "cscop" : "non_cscop"}_${type}`] || 0;
 
   return (
     <main>
@@ -166,6 +197,39 @@ function App() {
         </article>
       </section>
 
+      <section className="panel governance-panel">
+        <div className="panel-title">
+          <h2>CSCOP Governance Split</h2>
+          <span className="unit">Formal project ID vs Operation / non-CSCOP</span>
+        </div>
+        <div className="dedicated-summary governance-summary">
+          <div>
+            <span>Q1 CSCOP Actual / Planned</span>
+            <strong>{formatMd(cscopTotals.q1_actual)} / {formatMd(cscopTotals.q1_planned)} MD</strong>
+            <small>{(q1CscopCoverage * 100).toFixed(0)}% of Q1 actual has CSCOP ID</small>
+          </div>
+          <div>
+            <span>Q2 CSCOP Actual / Planned</span>
+            <strong>{formatMd(cscopTotals.q2_actual)} / {formatMd(cscopTotals.q2_planned)} MD</strong>
+            <small>{(q2CscopCoverage * 100).toFixed(0)}% of Q2 actual has CSCOP ID</small>
+          </div>
+          <div>
+            <span>Q3 CSCOP Forecast</span>
+            <strong>{formatMd(cscopTotals.q3_planned)} MD</strong>
+            <small>{(q3CscopCoverage * 100).toFixed(0)}% of Q3 plan has CSCOP ID</small>
+          </div>
+          <p>
+            Q2 actual is mainly recorded under Operation rather than CSCOP projects. Before resource decisions, confirm whether this is genuine BAU effort or project work missing a CSCOP ID.
+          </p>
+        </div>
+        <div className="governance-band">
+          <strong>Non-CSCOP / Operation:</strong>
+          <span>Q1 {formatMd(nonCscopTotals.q1_actual)} / {formatMd(nonCscopTotals.q1_planned)} MD</span>
+          <span>Q2 {formatMd(nonCscopTotals.q2_actual)} / {formatMd(nonCscopTotals.q2_planned)} MD</span>
+          <span>Q3 forecast {formatMd(nonCscopTotals.q3_planned)} MD</span>
+        </div>
+      </section>
+
       <section className="summary-grid">
         <article className="panel chart-panel">
           <div className="panel-title">
@@ -231,20 +295,27 @@ function App() {
       <section className="panel project-panel">
         <div className="panel-title">
           <h2>Project Effort Detail</h2>
-          <div className="tabs" role="tablist" aria-label="Project quarter">
-            {["Q1", "Q2", "Q3"].map((quarter) => (
-              <button key={quarter} className={projectQuarter === quarter ? "active" : ""} type="button" onClick={() => setProjectQuarter(quarter)}>{quarter}</button>
-            ))}
+          <div className="panel-controls">
+            <div className="tabs scope-tabs" role="tablist" aria-label="Project ID scope">
+              <button className={projectScope === "cscop" ? "active" : ""} type="button" onClick={() => setProjectScope("cscop")}>CSCOP Projects</button>
+              <button className={projectScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setProjectScope("non_cscop")}>Operation / Non-CSCOP</button>
+            </div>
+            <div className="tabs" role="tablist" aria-label="Project quarter">
+              {["Q1", "Q2", "Q3"].map((quarter) => (
+                <button key={quarter} className={projectQuarter === quarter ? "active" : ""} type="button" onClick={() => setProjectQuarter(quarter)}>{quarter}</button>
+              ))}
+            </div>
           </div>
         </div>
         <div className="table-wrap project-table">
           <table>
-            <thead><tr><th>Project</th><th>Actual MD</th><th>Planned / Forecast MD</th><th>Variance</th><th>Read</th></tr></thead>
+            <thead><tr><th>Project ID</th><th>Project</th><th>Actual MD</th><th>Planned / Forecast MD</th><th>Variance</th><th>Read</th></tr></thead>
             <tbody>
               {projectRows.map((row) => {
                 const variance = row.actual - row.planned;
                 return (
-                  <tr key={`${row.quarter}-${row.project}`}>
+                  <tr key={`${row.quarter}-${row.project_id}-${row.project}`}>
+                    <td><span className={row.cscop ? "project-id" : "operation-id"}>{row.project_id}</span></td>
                     <td><strong>{row.project}</strong></td>
                     <td>{projectQuarter === "Q3" ? "Not started" : `${formatMd(row.actual)} MD`}</td>
                     <td>{formatMd(row.planned)} MD</td>
@@ -261,7 +332,10 @@ function App() {
       <section className="panel resource-panel">
         <div className="panel-title">
           <h2>All EY Resource Detail</h2>
-          <span className="unit">Core + additional vendor resources</span>
+          <div className="tabs scope-tabs" role="tablist" aria-label="Resource ID scope">
+            <button className={resourceScope === "cscop" ? "active" : ""} type="button" onClick={() => setResourceScope("cscop")}>CSCOP Projects</button>
+            <button className={resourceScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setResourceScope("non_cscop")}>Operation / Non-CSCOP</button>
+          </div>
         </div>
         <div className="table-wrap">
           <table>
@@ -271,10 +345,16 @@ function App() {
                 <tr key={row.name}>
                   <td><StatusBadge value={row.status} /></td>
                   <td><strong>{row.name}</strong><small>{row.featured ? "Core EY vendor" : "EY resource"}</small></td>
-                  <td>{formatMd(row.q1_actual)} / {formatMd(row.q1_planned)} MD</td>
-                  <td>{formatMd(row.q2_actual)} / {formatMd(row.q2_planned)} MD</td>
-                  <td>{formatMd(row.q3_planned)} MD</td>
-                  <td>{row.current_read}</td>
+                  <td>{formatMd(scopedResourceValue(row, "q1", "actual"))} / {formatMd(scopedResourceValue(row, "q1", "planned"))} MD</td>
+                  <td>{formatMd(scopedResourceValue(row, "q2", "actual"))} / {formatMd(scopedResourceValue(row, "q2", "planned"))} MD</td>
+                  <td>{formatMd(scopedResourceValue(row, "q3", "planned"))} MD</td>
+                  <td>
+                    {resourceScope === "cscop"
+                      ? scopedResourceValue(row, "q3", "planned") === 0 && scopedResourceValue(row, "q1", "actual") + scopedResourceValue(row, "q2", "actual") > 0
+                        ? "Historical CSCOP effort; no Q3 forecast"
+                        : "CSCOP project allocation"
+                      : "Operation / non-CSCOP effort; validate classification"}
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -13,6 +13,9 @@ This is an independent Vite/React dashboard for EY vendor resource planning. Do 
 - Planning data comes from the daily planning detail sheet.
 - Actual data comes from the raw timesheet detail sheet.
 - Filter EY resources using the company field, not name matching.
+- Treat project IDs beginning with `CSCOP-` as formal project effort.
+- Keep `Operation` and blank project IDs in the non-CSCOP governance category.
+- CSCOP and non-CSCOP totals must reconcile to the overall total within display rounding.
 - The core group is Iris jin, Morgan Xu, Nina Wu and Cindy Zhang.
 - Keep all other EY resources in the detailed list.
 

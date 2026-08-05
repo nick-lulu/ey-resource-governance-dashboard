@@ -73,12 +73,16 @@ def main() -> None:
     plan_names = plan.iloc[:, 1].astype(str).str.strip()
     plan_dates = pd.to_datetime(plan.iloc[:, 0], errors="coerce")
     plan_hours = pd.to_numeric(plan.iloc[:, 25], errors="coerce").fillna(0)
+    plan_ids = plan.iloc[:, 5].fillna("").astype(str).str.strip()
     plan_projects = plan.iloc[:, 6].fillna("Unassigned").astype(str).str.strip()
+    plan_cscop = plan_ids.str.upper().str.startswith("CSCOP-")
 
     actual_names = actual.iloc[:, 0].astype(str).str.strip()
     actual_dates = pd.to_datetime(actual.iloc[:, 13], errors="coerce")
     actual_hours = pd.to_numeric(actual.iloc[:, 16], errors="coerce").fillna(0)
+    actual_ids = actual.iloc[:, 4].fillna("").astype(str).str.strip()
     actual_projects = actual.iloc[:, 5].fillna("Unassigned").astype(str).str.strip()
+    actual_cscop = actual_ids.str.upper().str.startswith("CSCOP-")
 
     names = sorted(set(plan_names.unique()) | set(actual_names.unique()))
     resources = []
@@ -91,14 +95,48 @@ def main() -> None:
             row[f"{quarter.lower()}_actual"] = quarter_value(
                 actual_dates[actual_names.eq(name)], actual_hours[actual_names.eq(name)], quarter
             )
+            row[f"{quarter.lower()}_cscop_planned"] = quarter_value(
+                plan_dates[plan_names.eq(name) & plan_cscop],
+                plan_hours[plan_names.eq(name) & plan_cscop],
+                quarter,
+            )
+            row[f"{quarter.lower()}_cscop_actual"] = quarter_value(
+                actual_dates[actual_names.eq(name) & actual_cscop],
+                actual_hours[actual_names.eq(name) & actual_cscop],
+                quarter,
+            )
+            row[f"{quarter.lower()}_non_cscop_planned"] = quarter_value(
+                plan_dates[plan_names.eq(name) & ~plan_cscop],
+                plan_hours[plan_names.eq(name) & ~plan_cscop],
+                quarter,
+            )
+            row[f"{quarter.lower()}_non_cscop_actual"] = quarter_value(
+                actual_dates[actual_names.eq(name) & ~actual_cscop],
+                actual_hours[actual_names.eq(name) & ~actual_cscop],
+                quarter,
+            )
         row["status"] = resource_status(row)
         row["current_read"] = current_read(row)
         resources.append(row)
 
     totals = {}
+    cscop_totals = {}
+    non_cscop_totals = {}
     for quarter in QUARTERS:
         totals[f"{quarter.lower()}_planned"] = quarter_value(plan_dates, plan_hours, quarter)
         totals[f"{quarter.lower()}_actual"] = quarter_value(actual_dates, actual_hours, quarter)
+        cscop_totals[f"{quarter.lower()}_planned"] = quarter_value(
+            plan_dates[plan_cscop], plan_hours[plan_cscop], quarter
+        )
+        cscop_totals[f"{quarter.lower()}_actual"] = quarter_value(
+            actual_dates[actual_cscop], actual_hours[actual_cscop], quarter
+        )
+        non_cscop_totals[f"{quarter.lower()}_planned"] = quarter_value(
+            plan_dates[~plan_cscop], plan_hours[~plan_cscop], quarter
+        )
+        non_cscop_totals[f"{quarter.lower()}_actual"] = quarter_value(
+            actual_dates[~actual_cscop], actual_hours[~actual_cscop], quarter
+        )
 
     featured_totals = {
         key: round(sum(row[key] for row in resources if row["featured"]), 2)
@@ -109,22 +147,26 @@ def main() -> None:
     for quarter, (start, end) in QUARTERS.items():
         planned = pd.DataFrame(
             {
+                "project_id": plan_ids[plan_dates.between(start, end)].replace("", "No CSCOP"),
                 "project": plan_projects[plan_dates.between(start, end)],
                 "planned_hours": plan_hours[plan_dates.between(start, end)],
             }
-        ).groupby("project", as_index=False)["planned_hours"].sum()
+        ).groupby(["project_id", "project"], as_index=False)["planned_hours"].sum()
         actual_q = pd.DataFrame(
             {
+                "project_id": actual_ids[actual_dates.between(start, end)].replace("", "No CSCOP"),
                 "project": actual_projects[actual_dates.between(start, end)],
                 "actual_hours": actual_hours[actual_dates.between(start, end)],
             }
-        ).groupby("project", as_index=False)["actual_hours"].sum()
-        merged = planned.merge(actual_q, on="project", how="outer").fillna(0)
+        ).groupby(["project_id", "project"], as_index=False)["actual_hours"].sum()
+        merged = planned.merge(actual_q, on=["project_id", "project"], how="outer").fillna(0)
         for item in merged.itertuples(index=False):
             project_rows.append(
                 {
                     "quarter": quarter,
+                    "project_id": item.project_id,
                     "project": item.project,
+                    "cscop": str(item.project_id).upper().startswith("CSCOP-"),
                     "actual": md(item.actual_hours),
                     "planned": md(item.planned_hours),
                 }
@@ -146,6 +188,8 @@ def main() -> None:
         "featured_names": FEATURED,
         "resource_count": len(resources),
         "totals": totals,
+        "cscop_totals": cscop_totals,
+        "non_cscop_totals": non_cscop_totals,
         "featured_totals": featured_totals,
         "resources": resources,
         "projects": sorted(project_rows, key=lambda row: (row["quarter"], -(row["actual"] + row["planned"]))),
