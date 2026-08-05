@@ -92,6 +92,7 @@ function App() {
   const [projectScope, setProjectScope] = useState("cscop");
   const [resourceScope, setResourceScope] = useState("cscop");
   const [coreScope, setCoreScope] = useState("cscop");
+  const [summaryScope, setSummaryScope] = useState("cscop");
   const {
     totals,
     cscop_totals: cscopTotals,
@@ -106,6 +107,15 @@ function App() {
   const q1CscopCoverage = totals.q1_actual ? cscopTotals.q1_actual / totals.q1_actual : 0;
   const q2CscopCoverage = totals.q2_actual ? cscopTotals.q2_actual / totals.q2_actual : 0;
   const q3CscopCoverage = totals.q3_planned ? cscopTotals.q3_planned / totals.q3_planned : 0;
+  const summaryTotals = summaryScope === "cscop" ? cscopTotals : nonCscopTotals;
+  const summaryLabel = summaryScope === "cscop" ? "CSCOP" : "Non-CSCOP";
+  const summaryQ1Gap = summaryTotals.q1_actual - summaryTotals.q1_planned;
+  const summaryQ2Gap = summaryTotals.q2_actual - summaryTotals.q2_planned;
+  const summaryResourceCount = data.resources.filter((row) =>
+    ["q1", "q2", "q3"].some((quarter) =>
+      ["actual", "planned"].some((type) => Number(row[`${quarter}_${summaryScope}_${type}`] || 0) > 0),
+    ),
+  ).length;
 
   const chartData = [
     { quarter: "Q1", actual: totals.q1_actual, planned: totals.q1_planned },
@@ -154,17 +164,23 @@ function App() {
             Q1 and Q2 validate actual effort against planned MD. Q3 shows forecast readiness for EY vendor demand before execution.
           </p>
         </div>
-        <button className="download" type="button" onClick={downloadDetail}>
-          <Download size={17} />
-          Data detail
-        </button>
+        <div className="hero-actions">
+          <div className="tabs summary-tabs" role="tablist" aria-label="Portfolio summary scope">
+            <button className={summaryScope === "cscop" ? "active" : ""} type="button" onClick={() => setSummaryScope("cscop")}>CSCOP</button>
+            <button className={summaryScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setSummaryScope("non_cscop")}>Non-CSCOP</button>
+          </div>
+          <button className="download" type="button" onClick={downloadDetail}>
+            <Download size={17} />
+            Data detail
+          </button>
+        </div>
       </header>
 
       <section className="kpis">
-        <Kpi icon={Users} label="EY Resource Scope" value={`${data.resource_count} people`} note="4 core resources + 9 additional EY resources" />
-        <Kpi icon={BarChart3} label="Q1 Actual vs Planned" value={`${formatMd(totals.q1_actual)} / ${formatMd(totals.q1_planned)} MD`} note={`${signedMd(q1Gap)} variance`} tone="blue" />
-        <Kpi icon={Target} label="Q2 Actual vs Planned" value={`${formatMd(totals.q2_actual)} / ${formatMd(totals.q2_planned)} MD`} note={`${signedMd(q2Gap)} variance`} tone="amber" />
-        <Kpi icon={Gauge} label="Q3 Forecast / Planned" value={`${formatMd(totals.q3_planned)} MD`} note="No Q3 actual in the source as of 31 Jul" tone="green" />
+        <Kpi icon={Users} label={`${summaryLabel} Resource Scope`} value={`${summaryResourceCount} people`} note={`EY resources with ${summaryLabel} planned or actual effort`} />
+        <Kpi icon={BarChart3} label={`Q1 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q1_actual)} / ${formatMd(summaryTotals.q1_planned)} MD`} note={`${signedMd(summaryQ1Gap)} variance`} tone="blue" />
+        <Kpi icon={Target} label={`Q2 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q2_actual)} / ${formatMd(summaryTotals.q2_planned)} MD`} note={`${signedMd(summaryQ2Gap)} variance`} tone="amber" />
+        <Kpi icon={Gauge} label={`Q3 ${summaryLabel} Forecast`} value={`${formatMd(summaryTotals.q3_planned)} MD`} note="No Q3 actual in the source as of 31 Jul" tone="green" />
       </section>
 
       <section className="summary-grid">
