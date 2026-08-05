@@ -91,6 +91,7 @@ function App() {
   const [projectQuarter, setProjectQuarter] = useState("Q1");
   const [projectScope, setProjectScope] = useState("cscop");
   const [resourceScope, setResourceScope] = useState("cscop");
+  const [coreScope, setCoreScope] = useState("cscop");
   const {
     totals,
     cscop_totals: cscopTotals,
@@ -116,6 +117,16 @@ function App() {
     () => data.featured_names.map((name) => data.resources.find((row) => row.name === name)).filter(Boolean),
     [],
   );
+  const featuredSplitTotals = useMemo(() => {
+    const summarize = (scope) => ({
+      q1Actual: featuredRows.reduce((sum, row) => sum + Number(row[`q1_${scope}_actual`] || 0), 0),
+      q1Plan: featuredRows.reduce((sum, row) => sum + Number(row[`q1_${scope}_planned`] || 0), 0),
+      q2Actual: featuredRows.reduce((sum, row) => sum + Number(row[`q2_${scope}_actual`] || 0), 0),
+      q2Plan: featuredRows.reduce((sum, row) => sum + Number(row[`q2_${scope}_planned`] || 0), 0),
+      q3Plan: featuredRows.reduce((sum, row) => sum + Number(row[`q3_${scope}_planned`] || 0), 0),
+    });
+    return { cscop: summarize("cscop"), non_cscop: summarize("non_cscop") };
+  }, [featuredRows]);
   const detailRows = useMemo(
     () => [...data.resources].sort((a, b) => (b.q1_actual + b.q2_actual) - (a.q1_actual + a.q2_actual)),
     [],
@@ -129,6 +140,9 @@ function App() {
 
   const scopedResourceValue = (row, quarter, type) =>
     row[`${quarter}_${resourceScope === "cscop" ? "cscop" : "non_cscop"}_${type}`] || 0;
+  const coreResourceValue = (row, quarter, type) =>
+    row[`${quarter}_${coreScope === "cscop" ? "cscop" : "non_cscop"}_${type}`] || 0;
+  const coreTotals = featuredSplitTotals[coreScope];
 
   return (
     <main>
@@ -265,13 +279,37 @@ function App() {
       <section className="panel dedicated-panel">
         <div className="panel-title">
           <h2>Core EY Vendor Reality</h2>
-          <span className="unit">Iris · Morgan · Nina · Cindy</span>
+          <div className="panel-controls">
+            <span className="unit">Iris · Morgan · Nina · Cindy</span>
+            <div className="tabs scope-tabs" role="tablist" aria-label="Core EY ID scope">
+              <button className={coreScope === "cscop" ? "active" : ""} type="button" onClick={() => setCoreScope("cscop")}>CSCOP Projects</button>
+              <button className={coreScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setCoreScope("non_cscop")}>Operation / Non-CSCOP</button>
+            </div>
+          </div>
         </div>
         <div className="dedicated-summary">
-          <div><span>Q1 Actual / Planned</span><strong>{formatMd(featuredTotals.q1_actual)} / {formatMd(featuredTotals.q1_planned)} MD</strong></div>
-          <div><span>Q2 Actual / Planned</span><strong>{formatMd(featuredTotals.q2_actual)} / {formatMd(featuredTotals.q2_planned)} MD</strong></div>
-          <div><span>Q3 Forecast / Planned</span><strong>{formatMd(featuredTotals.q3_planned)} MD</strong></div>
-          <p>The four named EY resources carry most Q1 actual effort, but their combined Q3 forecast is very light. Confirm continued demand and named allocation before Q3 execution.</p>
+          <div><span>Q1 {coreScope === "cscop" ? "CSCOP" : "Non-CSCOP"} Actual / Planned</span><strong>{formatMd(coreTotals.q1Actual)} / {formatMd(coreTotals.q1Plan)} MD</strong></div>
+          <div><span>Q2 {coreScope === "cscop" ? "CSCOP" : "Non-CSCOP"} Actual / Planned</span><strong>{formatMd(coreTotals.q2Actual)} / {formatMd(coreTotals.q2Plan)} MD</strong></div>
+          <div><span>Q3 {coreScope === "cscop" ? "CSCOP" : "Non-CSCOP"} Forecast</span><strong>{formatMd(coreTotals.q3Plan)} MD</strong></div>
+          <p>
+            {coreScope === "cscop"
+              ? "The four core resources account for almost all Q1 CSCOP actual effort. Q2 CSCOP actual is concentrated in Morgan, while Q3 named forecast remains very light."
+              : "Q1 non-CSCOP actual is concentrated in Cindy. Confirm whether this is valid Operation effort or project work that should carry a CSCOP ID."}
+          </p>
+        </div>
+        <div className="core-split-overview">
+          <div>
+            <strong>CSCOP Project Effort</strong>
+            <span>Q1 {formatMd(featuredSplitTotals.cscop.q1Actual)} / {formatMd(featuredSplitTotals.cscop.q1Plan)} MD</span>
+            <span>Q2 {formatMd(featuredSplitTotals.cscop.q2Actual)} / {formatMd(featuredSplitTotals.cscop.q2Plan)} MD</span>
+            <span>Q3 {formatMd(featuredSplitTotals.cscop.q3Plan)} MD</span>
+          </div>
+          <div>
+            <strong>Operation / Non-CSCOP Effort</strong>
+            <span>Q1 {formatMd(featuredSplitTotals.non_cscop.q1Actual)} / {formatMd(featuredSplitTotals.non_cscop.q1Plan)} MD</span>
+            <span>Q2 {formatMd(featuredSplitTotals.non_cscop.q2Actual)} / {formatMd(featuredSplitTotals.non_cscop.q2Plan)} MD</span>
+            <span>Q3 {formatMd(featuredSplitTotals.non_cscop.q3Plan)} MD</span>
+          </div>
         </div>
         <div className="table-wrap compact-table">
           <table>
@@ -281,10 +319,18 @@ function App() {
                 <tr key={row.name}>
                   <td><StatusBadge value={row.status} /></td>
                   <td><strong>{row.name}</strong><small>EY · Corporate</small></td>
-                  <td>{formatMd(row.q1_actual)} / {formatMd(row.q1_planned)} MD</td>
-                  <td>{formatMd(row.q2_actual)} / {formatMd(row.q2_planned)} MD</td>
-                  <td>{formatMd(row.q3_planned)} MD</td>
-                  <td>{row.current_read}</td>
+                  <td>{formatMd(coreResourceValue(row, "q1", "actual"))} / {formatMd(coreResourceValue(row, "q1", "planned"))} MD</td>
+                  <td>{formatMd(coreResourceValue(row, "q2", "actual"))} / {formatMd(coreResourceValue(row, "q2", "planned"))} MD</td>
+                  <td>{formatMd(coreResourceValue(row, "q3", "planned"))} MD</td>
+                  <td>
+                    {coreScope === "cscop"
+                      ? coreResourceValue(row, "q3", "planned") === 0 && coreResourceValue(row, "q1", "actual") + coreResourceValue(row, "q2", "actual") > 0
+                        ? "Historical CSCOP effort; no Q3 forecast"
+                        : "CSCOP project allocation"
+                      : coreResourceValue(row, "q1", "actual") + coreResourceValue(row, "q2", "actual") >= 5
+                        ? "Material non-CSCOP actual; validate classification"
+                        : "Limited Operation / non-CSCOP effort"}
+                  </td>
                 </tr>
               ))}
             </tbody>
