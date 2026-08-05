@@ -111,11 +111,6 @@ function App() {
   const summaryLabel = summaryScope === "cscop" ? "CSCOP" : "Non-CSCOP";
   const summaryQ1Gap = summaryTotals.q1_actual - summaryTotals.q1_planned;
   const summaryQ2Gap = summaryTotals.q2_actual - summaryTotals.q2_planned;
-  const summaryResourceCount = data.resources.filter((row) =>
-    ["q1", "q2", "q3"].some((quarter) =>
-      ["actual", "planned"].some((type) => Number(row[`${quarter}_${summaryScope}_${type}`] || 0) > 0),
-    ),
-  ).length;
 
   const chartData = [
     { quarter: "Q1", actual: totals.q1_actual, planned: totals.q1_planned },
@@ -177,7 +172,7 @@ function App() {
       </header>
 
       <section className="kpis">
-        <Kpi icon={Users} label={`${summaryLabel} Resource Scope`} value={`${summaryResourceCount} people`} note={`EY resources with ${summaryLabel} planned or actual effort`} />
+        <Kpi icon={Users} label="EY Resource Scope" value={`${data.resource_count} people`} note="Fixed EY resource pool: 4 core + 9 additional resources" />
         <Kpi icon={BarChart3} label={`Q1 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q1_actual)} / ${formatMd(summaryTotals.q1_planned)} MD`} note={`${signedMd(summaryQ1Gap)} variance`} tone="blue" />
         <Kpi icon={Target} label={`Q2 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q2_actual)} / ${formatMd(summaryTotals.q2_planned)} MD`} note={`${signedMd(summaryQ2Gap)} variance`} tone="amber" />
         <Kpi icon={Gauge} label={`Q3 ${summaryLabel} Forecast`} value={`${formatMd(summaryTotals.q3_planned)} MD`} note="No Q3 actual in the source as of 31 Jul" tone="green" />
