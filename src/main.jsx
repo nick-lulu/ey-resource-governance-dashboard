@@ -214,7 +214,7 @@ function App() {
       <section className="panel governance-panel">
         <div className="panel-title">
           <h2>CSCOP Governance Split</h2>
-          <span className="unit">Formal project ID vs Operation / non-CSCOP</span>
+          <span className="unit">Formal project ID vs Non-CSCOP</span>
         </div>
         <div className="dedicated-summary governance-summary">
           <div>
@@ -237,7 +237,7 @@ function App() {
           </p>
         </div>
         <div className="governance-band">
-          <strong>Non-CSCOP / Operation:</strong>
+          <strong>Non-CSCOP:</strong>
           <span>Q1 {formatMd(nonCscopTotals.q1_actual)} / {formatMd(nonCscopTotals.q1_planned)} MD</span>
           <span>Q2 {formatMd(nonCscopTotals.q2_actual)} / {formatMd(nonCscopTotals.q2_planned)} MD</span>
           <span>Q3 forecast {formatMd(nonCscopTotals.q3_planned)} MD</span>
@@ -283,7 +283,7 @@ function App() {
             <span className="unit">Iris · Morgan · Nina · Cindy</span>
             <div className="tabs scope-tabs" role="tablist" aria-label="Core EY ID scope">
               <button className={coreScope === "cscop" ? "active" : ""} type="button" onClick={() => setCoreScope("cscop")}>CSCOP Projects</button>
-              <button className={coreScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setCoreScope("non_cscop")}>Operation / Non-CSCOP</button>
+              <button className={coreScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setCoreScope("non_cscop")}>Non-CSCOP</button>
             </div>
           </div>
         </div>
@@ -305,7 +305,7 @@ function App() {
             <span>Q3 {formatMd(featuredSplitTotals.cscop.q3Plan)} MD</span>
           </div>
           <div>
-            <strong>Operation / Non-CSCOP Effort</strong>
+            <strong>Non-CSCOP Effort</strong>
             <span>Q1 {formatMd(featuredSplitTotals.non_cscop.q1Actual)} / {formatMd(featuredSplitTotals.non_cscop.q1Plan)} MD</span>
             <span>Q2 {formatMd(featuredSplitTotals.non_cscop.q2Actual)} / {formatMd(featuredSplitTotals.non_cscop.q2Plan)} MD</span>
             <span>Q3 {formatMd(featuredSplitTotals.non_cscop.q3Plan)} MD</span>
@@ -329,7 +329,7 @@ function App() {
                         : "CSCOP project allocation"
                       : coreResourceValue(row, "q1", "actual") + coreResourceValue(row, "q2", "actual") >= 5
                         ? "Material non-CSCOP actual; validate classification"
-                        : "Limited Operation / non-CSCOP effort"}
+                        : "Limited non-CSCOP effort"}
                   </td>
                 </tr>
               ))}
@@ -344,7 +344,7 @@ function App() {
           <div className="panel-controls">
             <div className="tabs scope-tabs" role="tablist" aria-label="Project ID scope">
               <button className={projectScope === "cscop" ? "active" : ""} type="button" onClick={() => setProjectScope("cscop")}>CSCOP Projects</button>
-              <button className={projectScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setProjectScope("non_cscop")}>Operation / Non-CSCOP</button>
+              <button className={projectScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setProjectScope("non_cscop")}>Non-CSCOP</button>
             </div>
             <div className="tabs" role="tablist" aria-label="Project quarter">
               {["Q1", "Q2", "Q3"].map((quarter) => (
@@ -380,7 +380,7 @@ function App() {
           <h2>All EY Resource Detail</h2>
           <div className="tabs scope-tabs" role="tablist" aria-label="Resource ID scope">
             <button className={resourceScope === "cscop" ? "active" : ""} type="button" onClick={() => setResourceScope("cscop")}>CSCOP Projects</button>
-            <button className={resourceScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setResourceScope("non_cscop")}>Operation / Non-CSCOP</button>
+            <button className={resourceScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setResourceScope("non_cscop")}>Non-CSCOP</button>
           </div>
         </div>
         <div className="table-wrap">
@@ -399,7 +399,7 @@ function App() {
                       ? scopedResourceValue(row, "q3", "planned") === 0 && scopedResourceValue(row, "q1", "actual") + scopedResourceValue(row, "q2", "actual") > 0
                         ? "Historical CSCOP effort; no Q3 forecast"
                         : "CSCOP project allocation"
-                      : "Operation / non-CSCOP effort; validate classification"}
+                      : "Non-CSCOP effort; validate classification"}
                   </td>
                 </tr>
               ))}

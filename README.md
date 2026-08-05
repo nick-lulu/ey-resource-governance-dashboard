@@ -9,7 +9,7 @@ React dashboard for validating EY vendor planned effort, actual timesheets and Q
 - Q3: August through October 2026
 - Core EY view: Iris jin, Morgan Xu, Nina Wu and Cindy Zhang
 - Full detail: all EY resources found in the source workbooks
-- Governance split: formal projects with a `CSCOP-` project ID vs Operation / non-CSCOP effort
+- Governance split: formal projects with a `CSCOP-` project ID vs Non-CSCOP effort (including Operation and blank project IDs)
 - Conversion: 1 MD = 8 hours
 
 ## Run locally
