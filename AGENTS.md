@@ -13,6 +13,8 @@ This is an independent Vite/React dashboard for EY vendor resource planning. Do 
 - Planning data comes from the daily planning detail sheet.
 - Actual data comes from the raw timesheet detail sheet.
 - Filter EY resources using the company field, not name matching.
+- Preserve the full planning roster and show its overlap with the Actual EY roster.
+- Keep plan-only names and their planned MD in the main scope, and expose their missing Actual presence as a governance gap.
 - Treat project IDs beginning with `CSCOP-` as formal project effort.
 - Keep `Operation` and blank project IDs in the non-CSCOP governance category.
 - CSCOP and non-CSCOP totals must reconcile to the overall total within display rounding.

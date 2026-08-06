@@ -172,7 +172,7 @@ function App() {
       </header>
 
       <section className="kpis">
-        <Kpi icon={Users} label="EY Resource Scope" value={`${data.resource_count} people`} note="Fixed EY resource pool: 4 core + 9 additional resources" />
+        <Kpi icon={Users} label="EY Resource Scope" value={`${data.planned_resource_count} planned resources`} note={`${data.actual_resource_count} appeared in Actual; ${data.plan_only_resources.length} plan-only`} />
         <Kpi icon={BarChart3} label={`Q1 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q1_actual)} / ${formatMd(summaryTotals.q1_planned)} MD`} note={`${signedMd(summaryQ1Gap)} variance`} tone="blue" />
         <Kpi icon={Target} label={`Q2 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q2_actual)} / ${formatMd(summaryTotals.q2_planned)} MD`} note={`${signedMd(summaryQ2Gap)} variance`} tone="amber" />
         <Kpi icon={Gauge} label={`Q3 ${summaryLabel} Forecast`} value={`${formatMd(summaryTotals.q3_planned)} MD`} note="No Q3 actual in the source as of 31 Jul" tone="green" />

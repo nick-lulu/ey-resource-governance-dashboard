@@ -84,10 +84,19 @@ def main() -> None:
     actual_projects = actual.iloc[:, 5].fillna("Unassigned").astype(str).str.strip()
     actual_cscop = actual_ids.str.upper().str.startswith("CSCOP-")
 
-    names = sorted(set(plan_names.unique()) | set(actual_names.unique()))
+    planned_names = set(plan_names.unique())
+    actual_roster = set(actual_names.unique())
+    names = sorted(planned_names | actual_roster)
+    plan_only_resources = sorted(planned_names - actual_roster)
+    actual_only_resources = sorted(actual_roster - planned_names)
     resources = []
     for name in names:
-        row = {"name": name, "featured": name in FEATURED}
+        row = {
+            "name": name,
+            "featured": name in FEATURED,
+            "planned_roster": name in planned_names,
+            "actual_roster": name in actual_roster,
+        }
         for quarter in QUARTERS:
             row[f"{quarter.lower()}_planned"] = quarter_value(
                 plan_dates[plan_names.eq(name)], plan_hours[plan_names.eq(name)], quarter
@@ -115,8 +124,12 @@ def main() -> None:
                 actual_hours[actual_names.eq(name) & ~actual_cscop],
                 quarter,
             )
-        row["status"] = resource_status(row)
-        row["current_read"] = current_read(row)
+        row["status"] = "Medium" if name in plan_only_resources else resource_status(row)
+        row["current_read"] = (
+            "Planned resource; no Actual timesheet record"
+            if name in plan_only_resources
+            else current_read(row)
+        )
         resources.append(row)
 
     totals = {}
@@ -187,6 +200,10 @@ def main() -> None:
         "source": {"plan": "Planning workbook", "actual": "Actual timesheet workbook"},
         "featured_names": FEATURED,
         "resource_count": len(resources),
+        "planned_resource_count": len(planned_names),
+        "actual_resource_count": len(actual_roster),
+        "plan_only_resources": plan_only_resources,
+        "actual_only_resources": actual_only_resources,
         "totals": totals,
         "cscop_totals": cscop_totals,
         "non_cscop_totals": non_cscop_totals,

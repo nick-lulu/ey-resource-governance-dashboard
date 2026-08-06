@@ -9,6 +9,8 @@ React dashboard for validating EY vendor planned effort, actual timesheets and Q
 - Q3: August through October 2026
 - Core EY view: Iris jin, Morgan Xu, Nina Wu and Cindy Zhang
 - Full detail: all EY resources found in the source workbooks
+- Resource scope: 13 EY people in the planning workbook, with 11 appearing in the Actual timesheet workbook
+- Plan-only names remain in planned MD and are reported as a visibility gap instead of being removed
 - Governance split: formal projects with a `CSCOP-` project ID vs Non-CSCOP effort (including Operation and blank project IDs)
 - Conversion: 1 MD = 8 hours
 

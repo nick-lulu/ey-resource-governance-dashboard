@@ -11,6 +11,13 @@
     "Cindy Zhang"
   ],
   "resource_count": 13,
+  "planned_resource_count": 13,
+  "actual_resource_count": 11,
+  "plan_only_resources": [
+    "Ellie Wang",
+    "Winnie Liu"
+  ],
+  "actual_only_resources": [],
   "totals": {
     "q1_planned": 87.31,
     "q1_actual": 107.44,
@@ -46,6 +53,8 @@
     {
       "name": "Camellia Wang",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 1.43,
       "q1_actual": 1.31,
       "q1_cscop_planned": 0.0,
@@ -70,6 +79,8 @@
     {
       "name": "Chelsea Zhang",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 1.52,
       "q1_actual": 1.5,
       "q1_cscop_planned": 0.0,
@@ -94,6 +105,8 @@
     {
       "name": "Cindy Liu",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 1.78,
       "q1_actual": 1.75,
       "q1_cscop_planned": 0.0,
@@ -118,6 +131,8 @@
     {
       "name": "Cindy Zhang",
       "featured": true,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 7.14,
       "q1_actual": 21.47,
       "q1_cscop_planned": 6.87,
@@ -142,6 +157,8 @@
     {
       "name": "Ellie Wang",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": false,
       "q1_planned": 0.0,
       "q1_actual": 0.0,
       "q1_cscop_planned": 0.0,
@@ -161,11 +178,13 @@
       "q3_non_cscop_planned": 0.0,
       "q3_non_cscop_actual": 0.0,
       "status": "Medium",
-      "current_read": "No Q3 demand currently planned"
+      "current_read": "Planned resource; no Actual timesheet record"
     },
     {
       "name": "Iris jin",
       "featured": true,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 32.98,
       "q1_actual": 21.59,
       "q1_cscop_planned": 32.96,
@@ -190,6 +209,8 @@
     {
       "name": "Jason Yu",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 0.35,
       "q1_actual": 0.25,
       "q1_cscop_planned": 0.35,
@@ -214,6 +235,8 @@
     {
       "name": "Morgan Xu",
       "featured": true,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 18.74,
       "q1_actual": 2.88,
       "q1_cscop_planned": 18.55,
@@ -238,6 +261,8 @@
     {
       "name": "Nina Wu",
       "featured": true,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 0.58,
       "q1_actual": 38.25,
       "q1_cscop_planned": 0.58,
@@ -262,6 +287,8 @@
     {
       "name": "Raymond Lei",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 0.18,
       "q1_actual": 0.06,
       "q1_cscop_planned": 0.18,
@@ -286,6 +313,8 @@
     {
       "name": "Stella Chen",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 12.3,
       "q1_actual": 10.0,
       "q1_cscop_planned": 0.0,
@@ -310,6 +339,8 @@
     {
       "name": "Winnie Liu",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": false,
       "q1_planned": 0.0,
       "q1_actual": 0.0,
       "q1_cscop_planned": 0.0,
@@ -329,11 +360,13 @@
       "q3_non_cscop_planned": 0.0,
       "q3_non_cscop_actual": 0.0,
       "status": "Medium",
-      "current_read": "Forecast baseline exists"
+      "current_read": "Planned resource; no Actual timesheet record"
     },
     {
       "name": "jiabao liu",
       "featured": false,
+      "planned_roster": true,
+      "actual_roster": true,
       "q1_planned": 10.31,
       "q1_actual": 8.38,
       "q1_cscop_planned": 0.0,
