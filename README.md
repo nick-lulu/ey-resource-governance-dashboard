@@ -13,6 +13,7 @@ React dashboard for validating EY vendor planned effort, actual timesheets and Q
 - Plan-only names remain in planned MD and are reported as a visibility gap instead of being removed
 - Governance split: formal projects with a `CSCOP-` project ID vs Non-CSCOP effort (including Operation and blank project IDs)
 - Conversion: 1 MD = 8 hours
+- Capacity benchmark: 13 people x 20 working days x 3 months = 780 gross MD per quarter; this is a visibility benchmark, not proof of available capacity
 
 ## Run locally
 

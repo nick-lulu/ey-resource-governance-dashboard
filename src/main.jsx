@@ -113,9 +113,16 @@ function App() {
   } = data;
   const q1Gap = totals.q1_actual - totals.q1_planned;
   const q2Gap = totals.q2_actual - totals.q2_planned;
+  const grossQuarterCapacity = data.planned_resource_count * 20 * 3;
+  const q1PlanCapacityCoverage = totals.q1_planned / grossQuarterCapacity;
+  const q1ActualCapacityCoverage = totals.q1_actual / grossQuarterCapacity;
+  const q2PlanCapacityCoverage = totals.q2_planned / grossQuarterCapacity;
+  const q2ActualCapacityCoverage = totals.q2_actual / grossQuarterCapacity;
+  const q1PlanRealization = totals.q1_planned ? totals.q1_actual / totals.q1_planned : 0;
+  const q2PlanRealization = totals.q2_planned ? totals.q2_actual / totals.q2_planned : 0;
+  const q3CapacityCoverage = totals.q3_planned / grossQuarterCapacity;
   const q3VsQ2Actual = totals.q2_actual ? totals.q3_planned / totals.q2_actual : 0;
   const q3VsQ2Plan = totals.q2_planned ? totals.q3_planned / totals.q2_planned : 0;
-  const featuredShare = totals.q1_actual ? featuredTotals.q1_actual / totals.q1_actual : 0;
   const q1CscopCoverage = totals.q1_actual ? cscopTotals.q1_actual / totals.q1_actual : 0;
   const q2CscopCoverage = totals.q2_actual ? cscopTotals.q2_actual / totals.q2_actual : 0;
   const q3CscopCoverage = totals.q3_planned ? cscopTotals.q3_planned / totals.q3_planned : 0;
@@ -184,7 +191,7 @@ function App() {
       </header>
 
       <section className="kpis">
-        <Kpi icon={Users} label="EY Resource Scope" value={`${data.planned_resource_count} planned resources`} note={`${data.actual_resource_count} appeared in Actual; ${data.plan_only_resources.length} plan-only`} />
+        <Kpi icon={Users} label="Quarterly Capacity Benchmark" value={`${data.planned_resource_count} people / ${formatMd(grossQuarterCapacity, 0)} MD`} note={`20 days x 3 months; ${data.actual_resource_count} appeared in Actual, ${data.plan_only_resources.length} plan-only`} />
         <Kpi icon={BarChart3} label={`Q1 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q1_actual)} / ${formatMd(summaryTotals.q1_planned)} MD`} note={`${signedMd(summaryQ1Gap)} variance`} tone="blue" />
         <Kpi icon={Target} label={`Q2 ${summaryLabel} Actual vs Planned`} value={`${formatMd(summaryTotals.q2_actual)} / ${formatMd(summaryTotals.q2_planned)} MD`} note={`${signedMd(summaryQ2Gap)} variance`} tone="amber" />
         <Kpi icon={Gauge} label={`Q3 ${summaryLabel} Forecast`} value={`${formatMd(summaryTotals.q3_planned)} MD`} note="No Q3 actual in the source as of 31 Jul" tone="green" />
@@ -198,16 +205,16 @@ function App() {
           </div>
           <ul>
             <li>
-              <strong>Q1 delivery exceeded plan, while Q2 actual was materially below plan.</strong>
-              <span>Q1 was {signedMd(q1Gap)}; Q2 was {signedMd(q2Gap)}. The pattern points to timing, allocation or timesheet completeness questions rather than one consistent capacity trend.</span>
+              <strong>The source data explains only a small share of gross EY capacity.</strong>
+              <span>Against {formatMd(grossQuarterCapacity, 0)} MD theoretical quarterly capacity, Q1 plan / actual coverage was {(q1PlanCapacityCoverage * 100).toFixed(1)}% / {(q1ActualCapacityCoverage * 100).toFixed(1)}%; Q2 was {(q2PlanCapacityCoverage * 100).toFixed(1)}% / {(q2ActualCapacityCoverage * 100).toFixed(1)}%.</span>
             </li>
             <li>
-              <strong>Core EY effort was concentrated in Q1.</strong>
-              <span>Iris, Morgan, Nina and Cindy contributed {formatMd(featuredTotals.q1_actual)} MD, or {(featuredShare * 100).toFixed(0)}% of total EY Q1 actual effort.</span>
+              <strong>Plan realization is unstable across quarters.</strong>
+              <span>Q1 actual reached {(q1PlanRealization * 100).toFixed(0)}% of plan ({signedMd(q1Gap)}), while Q2 reached only {(q2PlanRealization * 100).toFixed(0)}% ({signedMd(q2Gap)}). This reversal needs project-level reconciliation before any capacity decision.</span>
             </li>
             <li>
-              <strong>Q3 forecast coverage is the immediate governance gap.</strong>
-              <span>Only {formatMd(totals.q3_planned)} MD is planned, equal to {(q3VsQ2Actual * 100).toFixed(0)}% of Q2 actual and {(q3VsQ2Plan * 100).toFixed(0)}% of Q2 planned demand.</span>
+              <strong>Q3 forecast is not decision-ready.</strong>
+              <span>Only {formatMd(totals.q3_planned)} MD is forecast: {(q3CapacityCoverage * 100).toFixed(1)}% of gross capacity, {(q3VsQ2Actual * 100).toFixed(0)}% of Q2 actual and {(q3VsQ2Plan * 100).toFixed(0)}% of Q2 plan.</span>
             </li>
           </ul>
         </article>
@@ -219,16 +226,16 @@ function App() {
           </div>
           <ul>
             <li>
-              <strong>Validate the Q2 drop before treating it as released capacity.</strong>
-              <span>Core resources recorded just {formatMd(featuredTotals.q2_actual)} MD actual against {formatMd(featuredTotals.q2_planned)} MD planned. Confirm project completion, role changes and missing timesheets.</span>
+              <strong>Build a capacity bridge before calling the gap available capacity.</strong>
+              <span>Reconcile all {formatMd(grossQuarterCapacity, 0)} MD into Lulu projects, other accounts, BAU / internal work, leave and truly unallocated capacity. The current files alone cannot prove under-utilization.</span>
             </li>
             <li>
-              <strong>Reconfirm named demand for Q3.</strong>
-              <span>Nina has no Q3 plan; Iris and Cindy have almost no Q3 allocation. Morgan has {formatMd(featuredRows.find((row) => row.name === "Morgan Xu")?.q3_planned)} MD forecast.</span>
+              <strong>Resolve the Q2 missing realization at project and person level.</strong>
+              <span>{formatMd(Math.abs(q2Gap))} MD planned effort did not appear in Actual. Confirm whether work was deferred, cancelled, reassigned, recorded as Non-CSCOP or not submitted.</span>
             </li>
             <li>
-              <strong>Use weekly actual-vs-forecast checks from August.</strong>
-              <span>Flag unplanned actual effort immediately and review any person or project with variance above 20%.</span>
+              <strong>Complete named Q3 demand before making vendor decisions.</strong>
+              <span>Assign every forecast MD to a person, project / CSCOP and month, then review forecast coverage and actual realization weekly from August.</span>
             </li>
           </ul>
         </article>
