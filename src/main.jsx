@@ -30,6 +30,18 @@ const formatMd = (value, digits = 1) =>
 
 const signedMd = (value) => `${Number(value) >= 0 ? "+" : ""}${formatMd(value)} MD`;
 
+function projectRead(actual, planned, quarter) {
+  if (quarter === "Q3") return "Forecast baseline";
+  if (planned === 0 && actual > 0) return "Actual recorded without plan";
+  if (actual === 0 && planned > 0) return "Plan not reflected in Actual";
+  if (planned === 0) return "No effort recorded";
+
+  const varianceRate = (actual - planned) / planned;
+  if (varianceRate > 0.2) return "Actual materially above plan";
+  if (varianceRate < -0.2) return "Actual materially below plan";
+  return "Plan broadly aligned";
+}
+
 function Kpi({ icon: Icon, label, value, note, tone = "" }) {
   return (
     <section className={`kpi ${tone}`}>
@@ -377,7 +389,7 @@ function App() {
                     <td>{projectQuarter === "Q3" ? "Not started" : `${formatMd(row.actual)} MD`}</td>
                     <td>{formatMd(row.planned)} MD</td>
                     <td className={variance > 0 ? "negative" : "positive"}>{projectQuarter === "Q3" ? "—" : signedMd(variance)}</td>
-                    <td>{projectQuarter === "Q3" ? "Forecast baseline" : Math.abs(variance) >= 5 ? "Review material variance" : "Within 5 MD"}</td>
+                    <td>{projectRead(row.actual, row.planned, projectQuarter)}</td>
                   </tr>
                 );
               })}
