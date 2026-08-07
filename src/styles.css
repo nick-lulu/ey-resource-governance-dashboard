@@ -105,14 +105,17 @@ footer svg { flex: 0 0 auto; color: #56766f; }
 @media (max-width: 720px) {
   main { width: calc(100vw - 18px); padding-top: 18px; }
   .hero { flex-direction: column; }
-  .hero-actions { width: 100%; justify-content: space-between; }
+  .hero-actions { width: 100%; flex-wrap: wrap; }
+  .summary-tabs { width: 100%; }
+  .summary-tabs button { flex: 1; min-width: 0; }
+  .download { width: 100%; }
   h1 { font-size: 25px; }
   .kpis, .summary-grid, .dedicated-summary, .core-split-overview { grid-template-columns: 1fr; }
   .kpi { border-right: 0; border-bottom: 1px solid #e0e3e6; }
   .kpi:last-child { border-bottom: 0; }
   .dedicated-summary div, .dedicated-summary p { border-right: 0; border-bottom: 1px solid #e5e7eb; }
   .core-split-overview > div { border-right: 0; border-bottom: 1px solid #e5e7eb; }
-  .panel-title { align-items: flex-start; }
+  .panel-title { align-items: flex-start; flex-wrap: wrap; }
   .panel-controls { width: 100%; align-items: stretch; flex-direction: column; }
   .scope-tabs { width: 100%; }
   .scope-tabs button { flex: 1; min-width: 0; }

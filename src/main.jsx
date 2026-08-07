@@ -104,7 +104,7 @@ function App() {
   const [projectScope, setProjectScope] = useState("cscop");
   const [resourceScope, setResourceScope] = useState("cscop");
   const [coreScope, setCoreScope] = useState("cscop");
-  const [summaryScope, setSummaryScope] = useState("cscop");
+  const [summaryScope, setSummaryScope] = useState("all");
   const {
     totals,
     cscop_totals: cscopTotals,
@@ -126,8 +126,8 @@ function App() {
   const q1CscopCoverage = totals.q1_actual ? cscopTotals.q1_actual / totals.q1_actual : 0;
   const q2CscopCoverage = totals.q2_actual ? cscopTotals.q2_actual / totals.q2_actual : 0;
   const q3CscopCoverage = totals.q3_planned ? cscopTotals.q3_planned / totals.q3_planned : 0;
-  const summaryTotals = summaryScope === "cscop" ? cscopTotals : nonCscopTotals;
-  const summaryLabel = summaryScope === "cscop" ? "CSCOP" : "Non-CSCOP";
+  const summaryTotals = summaryScope === "all" ? totals : summaryScope === "cscop" ? cscopTotals : nonCscopTotals;
+  const summaryLabel = summaryScope === "all" ? "Overall" : summaryScope === "cscop" ? "CSCOP" : "Non-CSCOP";
   const summaryQ1Gap = summaryTotals.q1_actual - summaryTotals.q1_planned;
   const summaryQ2Gap = summaryTotals.q2_actual - summaryTotals.q2_planned;
 
@@ -180,6 +180,7 @@ function App() {
         </div>
         <div className="hero-actions">
           <div className="tabs summary-tabs" role="tablist" aria-label="Portfolio summary scope">
+            <button className={summaryScope === "all" ? "active" : ""} type="button" onClick={() => setSummaryScope("all")}>Overall</button>
             <button className={summaryScope === "cscop" ? "active" : ""} type="button" onClick={() => setSummaryScope("cscop")}>CSCOP</button>
             <button className={summaryScope === "non_cscop" ? "active" : ""} type="button" onClick={() => setSummaryScope("non_cscop")}>Non-CSCOP</button>
           </div>
